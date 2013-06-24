@@ -1,6 +1,7 @@
 import os
 import re
 import sys
+import json
 
 
 def create(skel_modules, target_path, params=None):
@@ -37,7 +38,19 @@ def clean_skel_vars_in_file(filename):
 def clean_skel_vars_in_dir(path):
     for root, dirs, files in os.walk(path):
         for f in files:
+            if f == '.skelvars':
+                continue
             clean_skel_vars_in_file(os.path.join(root, f))
+
+
+def load_skelvars(path):
+    filename = os.path.join(path, ".skelvars")
+    if os.path.exists(filename):
+        with open(filename) as f:
+            params = json.load(f)
+        return dict([(str(k), str(v)) for k, v in params.iteritems()])
+    else:
+        return {}
 
 
 def splitmergemethod(filename):
@@ -111,6 +124,10 @@ class Skeleton(object):
             raise Exception("Module '%s' not found in sys.path" % module)
 
     def apply_to(self, path):
+        params = load_skelvars(path)
+        params.update(self.params)
+        self.params = params
+
         self._merge_objects(path)
 
         for skel in self.extensions:

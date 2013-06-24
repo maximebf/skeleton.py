@@ -11,8 +11,10 @@ skeleton.py templates are python packages. The tool will automatically
 add the current dir in `sys.path`.
 
 It takes as argument a list of template packages and a target path.
+
 Some templates may need parameters. All environment variables starting
-with *SKEL* will be used as parameters.
+with *SKEL* will be used as parameters. If a JSON file named *.skelvars*
+is found in the target path, it will also be used.
 
 Very simple usage:
 
@@ -21,6 +23,11 @@ Very simple usage:
 With parameters:
 
     $ SKELMODULE=test skeleton flaskskel.base .
+
+With parameters using *.skelvars*:
+
+    $ echo '{"SKELMODULE": "test"}' > .skelvars
+    $ skeleton flaskskel.base .
 
 With multiple templates:
 
