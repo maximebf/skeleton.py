@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+
+import skeleton
+import sys
+import os
+
+args = list(sys.argv)
+del args[0]
+
+if len(args) == 0:
+    print "Usage: %s template [template template ...] target_path" % sys.argv[0]
+    print "Environment variables starting with SKEL are used as template parameters"
+    sys.exit(1)
+
+if os.getcwd() not in sys.path:
+    sys.path.append(os.getcwd())
+
+target_path = args.pop(-1)
+params = dict([(k, v) for k, v in os.environ.iteritems() if k.startswith('SKEL')])
+
+skeleton.create(args, target_path, params)
