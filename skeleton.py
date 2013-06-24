@@ -4,15 +4,15 @@ import sys
 import json
 
 
-def create(skel_modules, target_path, params=None):
+def create(skel_packages, target_path, params=None):
     if not os.path.exists(target_path):
         os.makedirs(target_path)
 
-    if isinstance(skel_modules, str):
-        skel_modules = [skel_modules]
+    if isinstance(skel_packages, str):
+        skel_packages = [skel_packages]
 
-    skel = Skeleton(skel_modules.pop(0), params)
-    for skel_module in skel_modules:
+    skel = Skeleton(skel_packages.pop(0), params)
+    for skel_module in skel_packages:
         skel.add_extension(Skeleton(skel_module))
 
     skel.apply_to(target_path)
@@ -106,22 +106,22 @@ def merge_imports(content, imports):
 
 
 class Skeleton(object):
-    def __init__(self, module, params=None):
-        self.module = module
+    def __init__(self, package, params=None):
+        self.package = package
         self.params = params or {}
         self.extensions = []
         self.added_objects = []
 
         self.path = None
-        modulepath = module.replace('.', '/')
+        pkgpath = package.replace('.', '/')
         for p in sys.path:
-            fullpath = os.path.join(p, modulepath)
+            fullpath = os.path.join(p, pkgpath)
             if os.path.exists(fullpath):
                 self.path = fullpath
                 break
 
         if self.path is None:
-            raise Exception("Module '%s' not found in sys.path" % module)
+            raise Exception("Package '%s' not found in sys.path" % package)
 
     def apply_to(self, path):
         params = load_skelvars(path)
