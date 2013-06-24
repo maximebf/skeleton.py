@@ -4,7 +4,7 @@ Create directory structures out of templates
 
     pip install skeleton
 
-## Usage
+## Usage
 
 skeleton.py comes with a command line utility called *skeleton*.
 skeleton.py templates are python packages. The tool will automatically
@@ -28,7 +28,7 @@ With multiple templates:
 
 ## Templates
 
-A template is a python package (without the *__init__.py*) which files
+A template is a python package (without the `__init__.py`) which files
 will be copied to the target path. Some processing is done during the copying.
 
 ### Parameters
@@ -55,14 +55,14 @@ Will generate:
         utils.py
     run.sh
 
-## Merging files
+## Merging files
 
 Multiple templates can be used at the same time thus some merging may
 be necessary.
 
 The default operation is to overwrite a file. A different merge operation
 can be specified in upper case before the extension. The operation name
-to append is *__APPEND__* and to prepend is *__PREPEND__*.
+to append is `__APPEND__` and to prepend is `__PREPEND__`.
 
     mymodule/
         SKELMODULE/
@@ -76,10 +76,10 @@ inserted at a specific position. Note that these placeholders will be removed
 from files where generated. Thus it is impossible to later merge a file inside
 a generated skeleton if it relies on that method.
 
-To define a block, use *SKELBLOCK_{NAME}* inside your file. The name of the
+To define a block, use `SKELBLOCK_{NAME}` inside your file. The name of the
 block can then be used as the merge operation in the filename.
 
-In *mymodule* template's *__init__.py*:
+In `mymodule` template's `__init__.py`:
 
     from flask import Flask
     app = Flask(__name__)
